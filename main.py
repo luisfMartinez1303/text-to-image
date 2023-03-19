@@ -7,10 +7,8 @@ app = Flask(__name__)
 @app.route('/', methods=['POST'])
 def generate_image():
     
-    # Carga las variables de entorno desde el archivo key.env
-    from dotenv import load_dotenv
-    load_dotenv('key.env')
-    api_key = os.getenv('OPENAI_API_KEY')
+    # Carga la variable de entorno 
+    api_key = os.environ.get('OPENAI_API_KEY')
 
     # Obtener la descripción de la imagen desde el cuerpo de la solicitud
     prompt = request.args['prompt']
