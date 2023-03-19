@@ -18,7 +18,7 @@ def generate_image():
     data = {
         'prompt': prompt,
         'n': 2,
-        'size': '1024x1024',
+        'size': '512x512',
         'response_format': 'url',
         'user': 'my-unique-user-id'
     }
