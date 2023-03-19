@@ -4,10 +4,6 @@ import requests
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET'])
-def saludo():
-    return 'hola'
-
 @app.route('/image', methods=['POST'])
 def generate_image():
     
@@ -21,7 +17,7 @@ def generate_image():
     url = 'https://api.openai.com/v1/images/generations'
     data = {
         'prompt': prompt,
-        'n': 4,
+        'n': 2,
         'size': '1024x1024',
         'response_format': 'url',
         'user': 'my-unique-user-id'
