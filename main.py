@@ -5,7 +5,7 @@ import requests
 app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
-def generate_image():
+def saludo():
     return 'hola'
 
 @app.route('/image', methods=['POST'])
