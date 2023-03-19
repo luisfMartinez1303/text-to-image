@@ -4,7 +4,11 @@ import requests
 
 app = Flask(__name__)
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET'])
+def generate_image():
+    return 'hola'
+
+@app.route('/image', methods=['POST'])
 def generate_image():
     
     # Carga la variable de entorno 
