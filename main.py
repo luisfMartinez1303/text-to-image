@@ -15,7 +15,7 @@ def generate_image():
     api_key = os.environ.get('OPENAI_API_KEY')
 
     # Obtener la descripción de la imagen desde el cuerpo de la solicitud
-    prompt = request.args['prompt']
+    prompt = request.json['prompt']
     print(request.__dict__)
     # Define la URL de la API y los datos de entrada
     url = 'https://api.openai.com/v1/images/generations'
