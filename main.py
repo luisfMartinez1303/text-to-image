@@ -40,8 +40,7 @@ def generate_image():
 @app.route('/bad-lenguage', methods=['POST'])
 def generate_bad_text():
 
-    # Carga las variables de entorno desde el archivo key.env
-    load_dotenv('key.env')
+    # Carga las variables de entorno
     openai.api_key = os.getenv('OPENAI_API_KEY')
 
     # Obtener el texto para verificar
