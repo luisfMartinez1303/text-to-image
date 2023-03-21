@@ -48,7 +48,7 @@ def generate_bad_text():
     text = request.json['text']
 
     completion = openai.Completion.create(  engine="text-davinci-003",
-                                            prompt=f"clacifica el siguiente texto como vulgar, discriminatorio,violento o de acoso: {text}",
+                                            prompt=f"clacifica el siguiente texto como vulgar, discriminatorio,violento ,acoso o texto aceptable: {text}",
                                             max_tokens=2048)
                         
     response = completion.choices[0].text
