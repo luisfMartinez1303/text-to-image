@@ -51,7 +51,7 @@ def generate_bad_text():
                                             prompt=f"clasifica el siguiente texto con solo una de las siguientes opciones: vulgar, discriminatorio,violento ,acoso, texto aceptable: {text}",
                                             max_tokens=2048)
                         
-    response = completion.choices[0]
+    response = completion.choices
 
     return jsonify(response)
 
@@ -68,7 +68,7 @@ def generate_snetiment():
                                             prompt=f"clasifica el siguiente texto con solo uno de los siguientes sentimientos: miedo, enfadado, triste, contento, feliz o neutro: {text}",
                                             max_tokens=2048)
                         
-    response = completion.choices[0]
+    response = completion.choices
 
     return jsonify(response)
 
