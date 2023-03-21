@@ -38,8 +38,8 @@ def generate_image():
     # Mostrar la URL de la imagen en la plantilla
     return jsonify(image_url)
 
-@app.route('/bad-lenguage', methods=['POST'])
-def generate_bad_text():
+@app.route('/bad-language', methods=['POST'])
+def detect_bad_language():
 
     # Carga las variables de entorno
     openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -68,7 +68,7 @@ def generate_bad_text():
     return jsonify({'sentiment':response})
 
 @app.route('/sentiment', methods=['POST'])
-def generate_snetiment():
+def detect_snetiment():
 
     # Carga las variables de entorno
     openai.api_key = os.getenv('OPENAI_API_KEY')
