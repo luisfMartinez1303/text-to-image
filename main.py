@@ -48,7 +48,24 @@ def generate_bad_text():
     text = request.json['text']
 
     completion = openai.Completion.create(  engine="text-davinci-003",
-                                            prompt=f"clacifica el siguiente texto como vulgar, discriminatorio,violento ,acoso o texto aceptable: {text}",
+                                            prompt=f"clasifica el siguiente texto con una de las siguientes opciones: vulgar, discriminatorio,violento ,acoso, texto aceptable: {text}",
+                                            max_tokens=2048)
+                        
+    response = completion.choices[0].text
+
+    return jsonify(response)
+
+@app.route('/sentiment', methods=['POST'])
+def generate_snetiment():
+
+    # Carga las variables de entorno
+    openai.api_key = os.getenv('OPENAI_API_KEY')
+
+    # Obtener el texto para verificar
+    text = request.json['text']
+
+    completion = openai.Completion.create(  engine="text-davinci-003",
+                                            prompt=f"clasifica el siguiente texto con uno de los siguientes sentimientos: enfadado, triste, contento, feliz o neutro: {text}",
                                             max_tokens=2048)
                         
     response = completion.choices[0].text
