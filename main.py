@@ -53,13 +53,13 @@ def generate_bad_text():
                         
     response = completion.choices[0].text
     
-    if 'vulgar' in response:
+    if 'vulgar' in response.lower():
         response=1
-    elif 'discriminatorio' in response:
+    elif 'discriminatorio' in response.lower():
         response=2
-    elif 'violento' in response:
+    elif 'violento' in response.lower():
         response=3
-    elif 'acoso' in response:
+    elif 'acoso' in response.lower():
         response=4
     else:
         response=5
@@ -82,15 +82,15 @@ def generate_snetiment():
                         
     response = completion.choices[0].text
     
-    if 'miedo' in response:
+    if 'miedo' in response.lower():
         response=1
-    elif 'enfadado' in response:
+    elif 'enfadado' in response.lower():
         response=2
-    elif 'triste' in response:
+    elif 'triste' in response.lower():
         response=3
-    elif 'contento' in response:
+    elif 'contento' in response.lower():
         response=4
-    elif 'feliz' in response:
+    elif 'feliz' in response.lower():
         response=4
     else:
         response=5
