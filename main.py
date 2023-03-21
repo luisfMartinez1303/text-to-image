@@ -37,6 +37,24 @@ def generate_image():
     # Mostrar la URL de la imagen en la plantilla
     return jsonify(image_url)
 
+@app.route('/bad-lenguage', methods=['POST'])
+def generate_bad_text():
+
+    # Carga las variables de entorno desde el archivo key.env
+    load_dotenv('key.env')
+    openai.api_key = os.getenv('OPENAI_API_KEY')
+
+    # Obtener el texto para verificar
+    text = request.json['text']
+
+    completion = openai.Completion.create(  engine="text-davinci-003",
+                                            prompt=f"clacifica el siguiente texto como vulgar, discriminatorio,violento o de acoso: {text}",
+                                            max_tokens=2048)
+                        
+    response = completion.choices[0].text
+
+    return jsonify(response)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))
