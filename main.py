@@ -48,10 +48,22 @@ def generate_bad_text():
     text = request.json['text']
 
     completion = openai.Completion.create(  engine="text-davinci-003",
-                                            prompt=f"clasifica el siguiente texto con solo una de las siguientes opciones: vulgar, discriminatorio,violento ,acoso, texto aceptable: {text}",
+                                            prompt=f"clasifica el siguiente texto con solo una de las siguientes opciones: vulgar,discriminatorio,violento ,acoso, texto aceptable: {text}",
                                             max_tokens=2048)
                         
     response = completion.choices[0].text
+    
+    if 'vulgar' in response:
+        response=1
+    elif 'discriminatorio' in response:
+        response=2
+    elif 'violento' in response:
+        response=3
+    elif 'acoso' in response:
+        response=4
+    else:
+        response=5
+        
 
     return jsonify({'sentiment':response})
 
@@ -69,6 +81,20 @@ def generate_snetiment():
                                             max_tokens=2048)
                         
     response = completion.choices[0].text
+    
+    if 'miedo' in response:
+        response=1
+    elif 'enfadado' in response:
+        response=2
+    elif 'triste' in response:
+        response=3
+    elif 'contento' in response:
+        response=4
+    elif 'feliz' in response:
+        response=4
+    else:
+        response=5
+        
     return jsonify({'sentiment':response})
 
 
