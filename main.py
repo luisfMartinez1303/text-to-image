@@ -77,7 +77,7 @@ def detect_snetiment():
     text = request.json['text']
 
     completion = openai.Completion.create(  engine="text-davinci-003",
-                                            prompt=f"clasifica el siguiente texto con solo uno de los siguientes sentimientos: miedo, enfadado, triste, contento, feliz o neutro: {text}",
+                                            prompt=f"clasifica el siguiente texto con solo uno de los siguientes sentimientos: miedo, enfadado, triste, feliz o neutro: {text}",
                                             max_tokens=2048)
                         
     response = completion.choices[0].text
@@ -88,8 +88,6 @@ def detect_snetiment():
         response=2
     elif 'triste' in response.lower():
         response=3
-    elif 'contento' in response.lower():
-        response=4
     elif 'feliz' in response.lower():
         response=4
     else:
