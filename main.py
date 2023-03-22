@@ -14,8 +14,10 @@ def generate_image():
     # Obtener la descripción de la imagen desde el cuerpo de la solicitud
     prompt = request.json['prompt']
     
+    text = request.json['text']
+    
     completion = openai.Completion.create(  engine="text-davinci-003",
-                                            prompt=f"clasifica el siguiente texto con solo una de las siguientes opciones: vulgar,discriminatorio,violento, texto aceptable: {prompt}",
+                                            prompt=f"clasifica el siguiente texto con solo una de las siguientes opciones: vulgar,discriminatorio,violento, texto aceptable: {text}",
                                             max_tokens=2048)
                         
     response = completion.choices[0].text
@@ -29,7 +31,7 @@ def generate_image():
     else:
         response=4
     if (response<4):
-        return jsonify({'Error':prompt ' tiene lenguaje ofensivo del tipo ' response})
+        return jsonify({'Error':text ' tiene lenguaje ofensivo del tipo ' response})
     else:
         # Define la URL de la API y los datos de entrada
         url = 'https://api.openai.com/v1/images/generations'
