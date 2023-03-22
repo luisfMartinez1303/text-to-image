@@ -28,9 +28,9 @@ def generate_image():
         response=3
     else:
         response=4
-   if (response<4):
+    if (response<4):
         return "Su petición contiene contenido inapropiado."
-   else:
+    else:
         # Define la URL de la API y los datos de entrada
         url = 'https://api.openai.com/v1/images/generations'
         data = {
