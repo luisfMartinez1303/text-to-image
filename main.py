@@ -48,7 +48,7 @@ def detect_bad_language():
     text = request.json['text']
 
     completion = openai.Completion.create(  engine="text-davinci-003",
-                                            prompt=f"clasifica el siguiente texto con solo una de las siguientes opciones: vulgar,discriminatorio,violento ,acoso, texto aceptable: {text}",
+                                            prompt=f"clasifica el siguiente texto con solo una de las siguientes opciones: vulgar,discriminatorio,violento, texto aceptable: {text}",
                                             max_tokens=2048)
                         
     response = completion.choices[0].text
@@ -59,13 +59,11 @@ def detect_bad_language():
         response=2
     elif 'violento' in response.lower():
         response=3
-    elif 'acoso' in response.lower():
-        response=4
     else:
-        response=5
+        response=4
         
 
-    return jsonify({'sentiment':response})
+    return jsonify({'classification':response})
 
 @app.route('/sentiment', methods=['POST'])
 def detect_snetiment():
