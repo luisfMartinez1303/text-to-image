@@ -9,7 +9,8 @@ app = Flask(__name__)
 def generate_image():
     
     # Carga la variable de entorno 
-    api_key = os.environ.get('OPENAI_API_KEY')
+    openai.api_key = os.getenv('OPENAI_API_KEY')
+    api_key_1 = os.environ.get('OPENAI_API_KEY')
 
     # Obtener la descripción de la imagen desde el cuerpo de la solicitud
     prompt = request.json['prompt']
@@ -45,7 +46,7 @@ def generate_image():
 
         # Define el encabezado de autorización que incluye su clave API
         headers = {
-            'Authorization': f'Bearer {api_key}',
+            'Authorization': f'Bearer {api_key_1}',
         }
 
         # Envía la solicitud HTTP POST con el encabezado de autorización y los datos de entrada
