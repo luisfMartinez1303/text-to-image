@@ -9,34 +9,29 @@ app = Flask(__name__)
 def generate_image():
     
     # Carga la variable de entorno 
-     api_key = os.environ.get('OPENAI_API_KEY')
-
+    api_key = os.environ.get('OPENAI_API_KEY')
     # Obtener la descripción de la imagen desde el cuerpo de la solicitud
-     prompt = request.json['prompt']
-    
+    prompt = request.json['prompt']
+   
     # Define la URL de la API y los datos de entrada
-     url = 'https://api.openai.com/v1/images/generations'
-     data = {
+    url = 'https://api.openai.com/v1/images/generations'
+    data = {
         'prompt': prompt,
         'n': 2,
         'size': '512x512',
         'response_format': 'url',
         'user': 'my-unique-user-id'
-      }
-
+    }
     # Define el encabezado de autorización que incluye su clave API
-      headers = {
-          'Authorization': f'Bearer {api_key}',
-      }
-
+    headers = {
+        'Authorization': f'Bearer {api_key}',
+    }
     # Envía la solicitud HTTP POST con el encabezado de autorización y los datos de entrada
-      response = requests.post(url, json=data, headers=headers)
-
+    response = requests.post(url, json=data, headers=headers)
     # Obtener la URL de la imagen generada desde la respuesta de la API
-      image_url = response.json()['data']
-
+    image_url = response.json()['data']
     # Mostrar la URL de la imagen en la plantilla
-      return jsonify(image_url)
+    return jsonify(image_url)
 
 @app.route('/bad-language', methods=['POST'])
 def detect_bad_language():
