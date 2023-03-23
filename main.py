@@ -18,9 +18,7 @@ def generate_image():
     response = requests.post(f'https://flask-production-782a.up.railway.app/bad-language',  json=Body)
     datos = response.json()['classification']
 
-    if datos!=4:
-        return jsonify({'Error':'El texto tiene lenguaje ofensivo'})
-    else:
+    if datos==4:
         url = 'https://api.openai.com/v1/images/generations'
         data = {
             'prompt': prompt,
@@ -43,6 +41,9 @@ def generate_image():
 
         # Mostrar la URL de la imagen en la plantilla
         return jsonify(image_url)
+        
+    else:
+        return jsonify({'Error':'El texto tiene lenguaje ofensivo'})
 
 @app.route('/bad-language', methods=['POST'])
 def detect_bad_language():
