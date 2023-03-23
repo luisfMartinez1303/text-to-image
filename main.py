@@ -2,8 +2,11 @@ from flask import Flask, request, jsonify
 import os
 import requests
 import openai
+from collections import Counter
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/image', methods=['POST'])
 def generate_image():
@@ -50,19 +53,27 @@ def detect_bad_language():
                                             prompt=f"clasifica el siguiente texto con solo una de las siguientes opciones: vulgar,discriminatorio,violento, texto aceptable: {text}",
                                             max_tokens=2048)
                         
-    response = completion.choices[0].text
-    
-    if 'vulgar' in response.lower():
-        response=1
-    elif 'discriminatorio' in response.lower():
-        response=2
-    elif 'violento' in response.lower():
-        response=3
-    else:
-        response=4
-        
+    for i  in range(0,2):
+        response = completion.choices[i].text
 
-    return jsonify({'classification':response})
+        if 'vulgar' in response.lower():
+            response=1
+        elif 'discriminatorio' in response.lower():
+            response=2
+        elif 'violento' in response.lower():
+            response=3
+        else:
+            response=4
+        answers.append(response)
+
+    def valor_mas_comun(lista):
+        contador = Counter(lista)
+        valor, frecuencia = contador.most_common(1)[0]
+        return valor
+
+    answers = valor_mas_comun(answers)
+
+    return jsonify({'classification':answers})
 
 @app.route('/sentiment', methods=['POST'])
 def detect_snetiment():
