@@ -54,7 +54,7 @@ def detect_bad_language():
     text = request.json['text']
 
     completion = openai.Completion.create(  engine="text-davinci-003",
-                                            prompt=f"clasifica el siguiente texto con solo una de las siguientes opciones: vulgar,discriminatorio,violento, texto aceptable: {text}",
+                                            prompt=f"teniendo en las vulgaridades españolas, clasifica el siguiente texto con solo una de las siguientes opciones: vulgar,discriminatorio,violento, texto aceptable: {text}",
                                             n=5,  
                                             max_tokens=2048)
                         
