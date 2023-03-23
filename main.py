@@ -9,7 +9,7 @@ from sqlalchemy import create_engine
 import psycopg2
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": ["https://frontend-nomad-list.vercel.app", "https://frontend-nomad-list.vercel.app/"]}})
 
 @app.route('/image', methods=['POST'])
 def generate_image():
