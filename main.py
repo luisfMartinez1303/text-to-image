@@ -45,7 +45,8 @@ def detect_bad_language():
 
     # Carga las variables de entorno
     openai.api_key = os.getenv('OPENAI_API_KEY')
-
+    
+    answers = []
     # Obtener el texto para verificar
     text = request.json['text']
 
