@@ -1,4 +1,4 @@
-def bad_language(text):
+def bad_language(imput_text):
   #Validar mensaje
 
     # Carga las variables de entorno
@@ -6,14 +6,14 @@ def bad_language(text):
 
     answers = []
     # Obtener el texto para verificar
-    text = request.json['prompt']
+    text = imput_text
 
     completion = openai.Completion.create(  engine="text-davinci-003",
-                                            prompt=f"teniendo en las vulgaridades españolas, clasifica el siguiente texto con solo una de las siguientes opciones: vulgar,discriminatorio,violento, texto aceptable: {text}",
+                                            prompt=f"teniendo en cuenta las vulgaridades españolas, clasifica el siguiente texto con solo una de las siguientes opciones: vulgar,discriminatorio,violento, texto aceptable: {text}",
                                             n=5,
                                             max_tokens=2048)
                         
-    for i  in range(0,4):
+    for i  in range(0,6):
         response = completion.choices[i].text
 
         if 'vulgar' in response.lower():
@@ -32,3 +32,5 @@ def bad_language(text):
         return valor
 
     answers = valor_mas_comun(answers)
+    
+    return answers
