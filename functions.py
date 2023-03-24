@@ -15,7 +15,7 @@ def bad_language(imput_text, api_key):
                                             n=5,
                                             max_tokens=2048)
                         
-    for i  in range(0,6):
+    for i  in range(0,5):
         response = completion.choices[i].text
 
         if 'vulgar' in response.lower():
