@@ -1,10 +1,10 @@
-def bad_language(imput_text):
+def bad_language(imput_text, api_key):
   
     import openai
     
     #Validar mensaje
     # Carga las variables de entorno
-    openai.api_key = os.environ.get('OPENAI_API_KEY')
+    openai.api_key = api_key
 
     answers = []
     # Obtener el texto para verificar
