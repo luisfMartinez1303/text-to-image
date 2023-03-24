@@ -12,7 +12,7 @@ def bad_language(imput_text, api_key):
     text = imput_text
 
     completion = openai.Completion.create(  engine="text-davinci-003",
-                                            prompt=f"teniendo en cuenta las vulgaridades del dialecto popular de españa, clasifica el siguiente texto con solo una de las siguientes opciones: vulgar,discriminatorio,violento, texto aceptable: {text}",
+                                            prompt=f"toma como referencia las vulgaridades españolas y clasifica el siguiente texto con solo una de las siguientes opciones: vulgar,discriminatorio,violento, texto aceptable: {text}",
                                             n=5,
                                             max_tokens=2048)
                         
