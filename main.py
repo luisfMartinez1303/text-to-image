@@ -7,7 +7,7 @@ from flask_cors import CORS
 import pandas as pd
 from sqlalchemy import create_engine
 import psycopg2
-from funtions import bad_language
+from functions import bad_language
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": ["https://frontend-nomad-list.vercel.app", "https://frontend-nomad-list.vercel.app/"]}})
