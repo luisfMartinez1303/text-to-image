@@ -7,6 +7,7 @@ from flask_cors import CORS
 import pandas as pd
 from sqlalchemy import create_engine
 import psycopg2
+from funtions import bad_language
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": ["https://frontend-nomad-list.vercel.app", "https://frontend-nomad-list.vercel.app/"]}})
@@ -15,43 +16,11 @@ api_key = os.environ.get('OPENAI_API_KEY')
 
 @app.route('/image', methods=['POST'])
 def generate_image():
-    
-    #Validar mensaje
-
-    # Carga las variables de entorno
-    openai.api_key = api_key
-
-    answers = []
-    # Obtener el texto para verificar
-    text = request.json['prompt']
-
-    completion = openai.Completion.create(  engine="text-davinci-003",
-                                            prompt=f"teniendo en las vulgaridades españolas, clasifica el siguiente texto con solo una de las siguientes opciones: vulgar,discriminatorio,violento, texto aceptable: {text}",
-                                            n=5,
-                                            max_tokens=2048)
-                        
-    for i  in range(0,4):
-        response = completion.choices[i].text
-
-        if 'vulgar' in response.lower():
-            response=1
-        elif 'discriminatorio' in response.lower():
-            response=2
-        elif 'violento' in response.lower():
-            response=3
-        else:
-            response=4
-        answers.append(response)
-
-    def valor_mas_comun(lista):
-        contador = Counter(lista)
-        valor, frecuencia = contador.most_common(1)[0]
-        return valor
-
-    answers = valor_mas_comun(answers)
-    
+   
     # Obtener la descripción de la imagen desde el cuerpo de la solicitud
     prompt = request.json['prompt']
+    
+    answers = bad_language(prompt)
 
     if answers!=4:
         return jsonify({'Error':'El texto tiene lenguaje ofensivo'})
@@ -82,75 +51,20 @@ def generate_image():
 @app.route('/bad-language', methods=['POST'])
 def detect_bad_language():
 
-    # Carga las variables de entorno
-    openai.api_key = api_key
-    
-    answers = []
     # Obtener el texto para verificar
     text = request.json['text']
-
-    completion = openai.Completion.create(  engine="text-davinci-003",
-                                            prompt=f"teniendo en las vulgaridades españolas, clasifica el siguiente texto con solo una de las siguientes opciones: vulgar,discriminatorio,violento, texto aceptable: {text}",
-                                            n=5,  
-                                            max_tokens=2048)
-                        
-    for i  in range(0,4):
-        response = completion.choices[i].text
-
-        if 'vulgar' in response.lower():
-            response=1
-        elif 'discriminatorio' in response.lower():
-            response=2
-        elif 'violento' in response.lower():
-            response=3
-        else:
-            response=4
-        answers.append(response)
-
-    def valor_mas_comun(lista):
-        contador = Counter(lista)
-        valor, frecuencia = contador.most_common(1)[0]
-        return valor
-
-    answers = valor_mas_comun(answers)
+    
+    answers = bad_language(text)
 
     return jsonify({'classification':answers})
 
 @app.route('/sentiment', methods=['POST'])
 def detect_snetiment():
 
-    # Carga las variables de entorno
-    openai.api_key = api_key
-    
-    #Validar mensaje
-    answers = []
     # Obtener el texto para verificar
     text = request.json['text']
 
-    completion = openai.Completion.create(  engine="text-davinci-003",
-                                            prompt=f"teniendo en las vulgaridades españolas, clasifica el siguiente texto con solo una de las siguientes opciones: vulgar,discriminatorio,violento, texto aceptable: {text}",
-                                            n=5,
-                                            max_tokens=2048)
-                        
-    for i  in range(0,4):
-        response = completion.choices[i].text
-
-        if 'vulgar' in response.lower():
-            response=1
-        elif 'discriminatorio' in response.lower():
-            response=2
-        elif 'violento' in response.lower():
-            response=3
-        else:
-            response=4
-        answers.append(response)
-
-    def valor_mas_comun(lista):
-        contador = Counter(lista)
-        valor, frecuencia = contador.most_common(1)[0]
-        return valor
-
-    answers = valor_mas_comun(answers)
+    answers = bad_language(text)
     
     #sentiment
     if answers!=4:
