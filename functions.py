@@ -1,0 +1,34 @@
+def bad_language(text):
+  #Validar mensaje
+
+    # Carga las variables de entorno
+    openai.api_key = api_key
+
+    answers = []
+    # Obtener el texto para verificar
+    text = request.json['prompt']
+
+    completion = openai.Completion.create(  engine="text-davinci-003",
+                                            prompt=f"teniendo en las vulgaridades españolas, clasifica el siguiente texto con solo una de las siguientes opciones: vulgar,discriminatorio,violento, texto aceptable: {text}",
+                                            n=5,
+                                            max_tokens=2048)
+                        
+    for i  in range(0,4):
+        response = completion.choices[i].text
+
+        if 'vulgar' in response.lower():
+            response=1
+        elif 'discriminatorio' in response.lower():
+            response=2
+        elif 'violento' in response.lower():
+            response=3
+        else:
+            response=4
+        answers.append(response)
+
+    def valor_mas_comun(lista):
+        contador = Counter(lista)
+        valor, frecuencia = contador.most_common(1)[0]
+        return valor
+
+    answers = valor_mas_comun(answers)
