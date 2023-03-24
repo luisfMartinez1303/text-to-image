@@ -20,7 +20,7 @@ def generate_image():
     # Obtener la descripción de la imagen desde el cuerpo de la solicitud
     prompt = request.json['prompt']
     
-    answers = bad_language(prompt)
+    answers = bad_language(prompt,api_key)
 
     if answers!=4:
         return jsonify({'Error':'El texto tiene lenguaje ofensivo'})
@@ -54,7 +54,7 @@ def detect_bad_language():
     # Obtener el texto para verificar
     text = request.json['text']
     
-    answers = bad_language(text)
+    answers = bad_language(text, api_key)
 
     return jsonify({'classification':answers})
 
@@ -64,7 +64,7 @@ def detect_snetiment():
     # Obtener el texto para verificar
     text = request.json['text']
 
-    answers = bad_language(text)
+    answers = bad_language(text, api_key)
     
     #sentiment
     if answers!=4:
