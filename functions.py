@@ -1,7 +1,7 @@
 def bad_language(imput_text, api_key):
   
     import openai
-    
+    import os
     #Validar mensaje
     # Carga las variables de entorno
     openai.api_key = api_key
