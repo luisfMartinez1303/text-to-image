@@ -108,10 +108,11 @@ def features_all():
     dbConnection.close()
 
     #Creamos un json
-    json = dataFrame.to_json(orient = "records")
-    json
+    dict = dataFrame.to_dict(orient= "index")
+    
+    #json
 
-    return jsonify(json)
+    return jsonify(dict)
 
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))
