@@ -10,7 +10,8 @@ import psycopg2
 from functions import bad_language
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": ["https://frontend-nomad-list.vercel.app", "https://frontend-nomad-list.vercel.app/"]}})
+CORS(app, resources={r"/*": {"origins": "*"}})
+# CORS(app, resources={r"/*": {"origins": ["https://frontend-nomad-list.vercel.app", "https://frontend-nomad-list.vercel.app/"]}})
 # Carga la variable de entorno 
 api_key = os.environ.get('OPENAI_API_KEY')
 
