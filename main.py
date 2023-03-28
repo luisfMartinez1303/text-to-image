@@ -8,6 +8,12 @@ import pandas as pd
 from sqlalchemy import create_engine
 import psycopg2
 from functions import bad_language
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import pymongo
+from scipy.sparse import hstack
+from bson import ObjectId
+import json
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -114,6 +120,64 @@ def features_all():
     #json
 
     return jsonify(dict)
+
+@app.route('/recomendations', methods=['POST'])
+def similarity():
+    
+    prompt = request.json['id']
+    id = ObjectId(prompt)
+    
+    # reemplaza <username> y <password> con tus credenciales de MongoDB
+    username = "datascience"
+    password = "datascience"
+
+    # crea una conexión a la base de datos
+    client = pymongo.MongoClient(f"mongodb+srv://{username}:{password}@testdb.is3yx9o.mongodb.net/?retryWrites=true&w=majority")
+
+    # selecciona la base de datos y la colección
+    db = client.test
+    collection = db.users
+
+    # convierte los datos de la colección en un Pandas DataFrame
+    data = pd.DataFrame(list(collection.find()))
+
+    def vectorizer (data):
+        data = data.loc[:,['_id','nationality','profession','hobby','hobby2','prefLocation']]
+        vectorizer = CountVectorizer()
+        nationality_vectorizer = vectorizer.fit_transform(data['nationality'])
+        profession_vectorizer = vectorizer.fit_transform(data['profession'])
+        hobby_vectorizer = vectorizer.fit_transform(data['hobby'])
+        hobby2_vectorizer = vectorizer.fit_transform(data['hobby2'])
+        location_vectorizer = vectorizer.fit_transform(data['prefLocation'])
+        caracteristicas = hstack([nationality_vectorizer,profession_vectorizer,hobby_vectorizer,hobby2_vectorizer,location_vectorizer])
+        caracteristicas_df = pd.DataFrame.sparse.from_spmatrix(caracteristicas)
+        return caracteristicas_df
+    
+    caracteristicas_df = vectorizer(data)
+    similitud = cosine_similarity(caracteristicas_df)
+   
+    usuario_id = data[data['_id']==id].index[0]
+    n_recomendaciones = 4
+
+    # new order, descending similitud
+    nuevo_orden = similitud[usuario_id].argsort()[::-1]
+    # apply new order, get first n excluding the same person
+    sugeridos = data.iloc[nuevo_orden][1:n_recomendaciones+1]
+    ids = sugeridos.loc[:,['_id','nationality','profession','hobby','hobby2','prefLocation']]
+
+    def serialize_objectid(obj):
+        if isinstance(obj, ObjectId):
+            return str(obj)
+        return obj
+
+    # Convertimos el DataFrame a una lista de diccionarios
+    records = ids.to_dict(orient='records')
+
+    # Convertimos la lista de diccionarios a un objeto JSON utilizando la función json.dumps()
+    json_str = json.dumps(records, default=serialize_objectid)
+
+    # Imprimimos el objeto JSON generado
+    return json_str
 
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))
