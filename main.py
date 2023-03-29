@@ -139,11 +139,11 @@ def similarity():
     collection = db.users
 
     # convierte los datos de la colección en un Pandas DataFrame
-    data = pd.DataFrame(list(collection.find()))
+    options = {"projection": {"_id": 1, "nationality": 1, "profession": 1, "hobby": 1, "hobby2": 1, "prefLocation": 1}}
+    data = pd.DataFrame(list(collection.find({}, **options)))
 
     def vectorizer (data):
         data.fillna(value='', inplace=True)
-        data = data.loc[:,['_id','nationality','profession','hobby','hobby2','prefLocation']]
         vectorizer = CountVectorizer()
         location_vectorizer = vectorizer.fit_transform(data['prefLocation'])
         nationality_vectorizer = vectorizer.fit_transform(data['nationality'])
