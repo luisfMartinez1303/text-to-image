@@ -140,7 +140,20 @@ def similarity():
 
     # convierte los datos de la colección en un Pandas DataFrame
     data = pd.DataFrame(list(collection.find()))
-   
+
+    def vectorizer (data):
+        data.fillna(value='', inplace=True)
+        data = data.loc[:,['_id','nationality','profession','hobby','hobby2','prefLocation']]
+        vectorizer = CountVectorizer()
+        location_vectorizer = vectorizer.fit_transform(data['prefLocation'])
+        nationality_vectorizer = vectorizer.fit_transform(data['nationality'])
+        profession_vectorizer = vectorizer.fit_transform(data['profession'])
+        hobby_vectorizer = vectorizer.fit_transform(data['hobby'])
+        hobby2_vectorizer = vectorizer.fit_transform(data['hobby2'])
+        caracteristicas = hstack([location_vectorizer,nationality_vectorizer,profession_vectorizer,hobby_vectorizer,hobby2_vectorizer])
+        caracteristicas_df = pd.DataFrame.sparse.from_spmatrix(caracteristicas)
+        return caracteristicas_df
+    
     caracteristicas_df = vectorizer(data)
     similitud = cosine_similarity(caracteristicas_df)
    
@@ -152,6 +165,11 @@ def similarity():
     # apply new order, get first n excluding the same person
     sugeridos = data.iloc[nuevo_orden][1:n_recomendaciones+1]
     ids = sugeridos.loc[:,['_id']]
+
+    def serialize_objectid(obj):
+        if isinstance(obj, bson.ObjectId):
+            return str(obj)
+        return obj
 
     # Convertimos el DataFrame a una lista de diccionarios
     records = ids.to_dict(orient='records')
