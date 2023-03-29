@@ -7,7 +7,7 @@ from flask_cors import CORS
 import pandas as pd
 from sqlalchemy import create_engine
 import psycopg2
-from functions import bad_language
+from functions import bad_language, vectorizer, serialize_objectid
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pymongo
@@ -125,7 +125,7 @@ def features_all():
 def similarity():
     
     prompt = request.json['id']
-    id = ObjectId(prompt)
+    id = bson.ObjectId(prompt)
     
     # reemplaza <username> y <password> con tus credenciales de MongoDB
     username = "datascience"
@@ -140,19 +140,7 @@ def similarity():
 
     # convierte los datos de la colección en un Pandas DataFrame
     data = pd.DataFrame(list(collection.find()))
-
-    def vectorizer (data):
-        data = data.loc[:,['_id','nationality','profession','hobby','hobby2','prefLocation']]
-        vectorizer = CountVectorizer()
-        nationality_vectorizer = vectorizer.fit_transform(data['nationality'])
-        profession_vectorizer = vectorizer.fit_transform(data['profession'])
-        hobby_vectorizer = vectorizer.fit_transform(data['hobby'])
-        hobby2_vectorizer = vectorizer.fit_transform(data['hobby2'])
-        location_vectorizer = vectorizer.fit_transform(data['prefLocation'])
-        caracteristicas = hstack([nationality_vectorizer,profession_vectorizer,hobby_vectorizer,hobby2_vectorizer,location_vectorizer])
-        caracteristicas_df = pd.DataFrame.sparse.from_spmatrix(caracteristicas)
-        return caracteristicas_df
-    
+   
     caracteristicas_df = vectorizer(data)
     similitud = cosine_similarity(caracteristicas_df)
    
@@ -163,12 +151,7 @@ def similarity():
     nuevo_orden = similitud[usuario_id].argsort()[::-1]
     # apply new order, get first n excluding the same person
     sugeridos = data.iloc[nuevo_orden][1:n_recomendaciones+1]
-    ids = sugeridos.loc[:,['_id','nationality','profession','hobby','hobby2','prefLocation']]
-
-    def serialize_objectid(obj):
-        if isinstance(obj, ObjectId):
-            return str(obj)
-        return obj
+    ids = sugeridos.loc[:,['_id']]
 
     # Convertimos el DataFrame a una lista de diccionarios
     records = ids.to_dict(orient='records')
