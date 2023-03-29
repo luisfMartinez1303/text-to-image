@@ -139,7 +139,7 @@ def similarity():
     collection = db.users
 
     # convierte los datos de la colección en un Pandas DataFrame
-    options = {"projection": {"_id": 1, "nationality": 1, "profession": 1, "hobby": 1, "hobby2": 1, "prefLocation": 1}}
+    options = {"projection": {"_id": 1, "nationality": 1, "profession": 1, "hobby": 1, "hobby2": 1, "prefLocation": 1, "avatar":1, "firstName":1}}
     data = pd.DataFrame(list(collection.find({}, **options)))
 
     def vectorizer (data):
@@ -164,7 +164,7 @@ def similarity():
     nuevo_orden = similitud[usuario_id].argsort()[::-1]
     # apply new order, get first n excluding the same person
     sugeridos = data.iloc[nuevo_orden][1:n_recomendaciones+1]
-    ids = sugeridos.loc[:,['_id']]
+    ids = sugeridos.loc[:,['_id','avatar','firstName']]
 
     def serialize_objectid(obj):
         if isinstance(obj, bson.ObjectId):
