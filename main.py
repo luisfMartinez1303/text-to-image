@@ -12,7 +12,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pymongo
 from scipy.sparse import hstack
-from bson import ObjectId
+import bson
 import json
 
 app = Flask(__name__)
