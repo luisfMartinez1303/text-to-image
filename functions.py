@@ -38,21 +38,3 @@ def bad_language(imput_text, api_key):
     
     return answers
 
-def vectorizer (data):
-    data.fillna(value='', inplace=True)
-    data = data.loc[:,['_id','nationality','profession','hobby','hobby2','prefLocation']]
-    vectorizer = CountVectorizer()
-    location_vectorizer = vectorizer.fit_transform(data['prefLocation'])
-    nationality_vectorizer = vectorizer.fit_transform(data['nationality'])
-    profession_vectorizer = vectorizer.fit_transform(data['profession'])
-    hobby_vectorizer = vectorizer.fit_transform(data['hobby'])
-    hobby2_vectorizer = vectorizer.fit_transform(data['hobby2'])
-    caracteristicas = hstack([location_vectorizer,nationality_vectorizer,profession_vectorizer,hobby_vectorizer,hobby2_vectorizer])
-    caracteristicas_df = pd.DataFrame.sparse.from_spmatrix(caracteristicas)
-    return caracteristicas_df
-  
-  def serialize_objectid(obj):
-    import bson
-    if isinstance(obj, bson.ObjectId):
-        return str(obj)
-    return obj
