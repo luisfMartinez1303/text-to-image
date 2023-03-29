@@ -7,7 +7,7 @@ from flask_cors import CORS
 import pandas as pd
 from sqlalchemy import create_engine
 import psycopg2
-from functions import bad_language, vectorizer, serialize_objectid
+from functions import bad_language
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pymongo
