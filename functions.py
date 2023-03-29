@@ -51,7 +51,7 @@ def vectorizer (data):
     caracteristicas_df = pd.DataFrame.sparse.from_spmatrix(caracteristicas)
     return caracteristicas_df
   
-  def serialize_objectid(obj):
+def serialize_objectid(obj):
     if isinstance(obj, bson.ObjectId):
         return str(obj)
     return obj
