@@ -15,4 +15,3 @@ scikit-learn==1.0.2
 pymongo==4.3.3
 scipy==1.9.1
 json5==0.9.6
-bson==0.5.9
